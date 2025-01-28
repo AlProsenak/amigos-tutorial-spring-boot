@@ -1,0 +1,10 @@
+# List of configuration priority:
+# - VM options
+# - application.properties
+# - application.yaml
+server:
+  port: 8080 # default
+
+spring:
+  main:
+    web-application-type: servlet # default
