@@ -19,8 +19,11 @@ public class TestController {
             path = "/test"
     )
     @ResponseBody
-    public String testHelloWorld() {
-        return "Hello World!";
+    public Response testHelloWorld() {
+        return new Response("Hello World!");
+    }
+
+    public record Response(String message) {
     }
 
 }
