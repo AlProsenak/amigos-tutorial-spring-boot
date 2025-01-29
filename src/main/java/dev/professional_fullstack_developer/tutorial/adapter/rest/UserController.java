@@ -6,6 +6,7 @@ import dev.professional_fullstack_developer.tutorial.domain.dto.SimpleResponse;
 import dev.professional_fullstack_developer.tutorial.domain.dto.UserResponse;
 import dev.professional_fullstack_developer.tutorial.domain.dto.UsersResponse;
 import dev.professional_fullstack_developer.tutorial.domain.entity.User;
+import dev.professional_fullstack_developer.tutorial.domain.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,7 @@ public class UserController {
         }
         Optional<User> user = repository.getUserById(id);
         if (user.isEmpty()) {
-            return new ResponseEntity<>(new SimpleResponse("Not found"), HttpStatus.NOT_FOUND);
+            throw new NotFoundException();
         }
         return new UserResponse(user.orElseThrow(() -> new RuntimeException("Unexpected error")));
     }
@@ -68,7 +69,7 @@ public class UserController {
     public Object deleteUser(@RequestParam(name = "id") long id) {
         Optional<User> deletedUser = repository.deleteUser(id);
         if (deletedUser.isEmpty()) {
-            return new ResponseEntity<>(new SimpleResponse("Not found"), HttpStatus.NOT_FOUND);
+            throw new NotFoundException();
         }
         return new UserResponse(deletedUser.orElseThrow(() -> new RuntimeException("Unexpected error")));
     }
