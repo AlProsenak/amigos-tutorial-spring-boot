@@ -3,6 +3,7 @@ package dev.professional_fullstack_developer.tutorial;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @RequestMapping(
@@ -19,8 +20,9 @@ public class TestController {
             path = "/test"
     )
     @ResponseBody
-    public Response testHelloWorld() {
-        return new Response("Hello World!");
+    public Response testHelloWorld(@RequestParam(name = "name", required = false) String name) {
+
+        return new Response("Hello %s!".formatted(name == null || name.isBlank() ? "World" : name));
     }
 
     public record Response(String message) {
