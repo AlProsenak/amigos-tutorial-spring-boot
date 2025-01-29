@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import java.util.Optional;
         path = "/api/v1"
 )
 @Controller
+@ResponseBody
 public class UserController {
 
     private final StaticUserRepository repository;
@@ -29,10 +31,9 @@ public class UserController {
 
     // @ResponseBody automatically wraps return type, as if it was ResponseEntity<String>
     @GetMapping(
-            path = "/user"
+            path = {"/user", "/user/{id}"}
     )
-    @ResponseBody
-    public Object getUsers(@RequestParam(name = "id", required = false) Long id) {
+    public Object getUsers(@PathVariable(name = "id", required = false) Long id) {
         if (id == null) {
             List<User> users = repository.getUsers();
             return new UsersResponse(users);
@@ -54,7 +55,6 @@ public class UserController {
             path = "/user",
             consumes = "application/json"
     )
-    @ResponseBody
     public Object createUser(@RequestBody CreateUser user) {
         long id = repository.createUser(user.name, user.email);
         return new ResponseEntity<>(new SimpleResponse("User created with ID: %s".formatted(id)), HttpStatus.CREATED);
@@ -63,7 +63,6 @@ public class UserController {
     @DeleteMapping(
             path = "/user"
     )
-    @ResponseBody
     public Object deleteUser(@RequestParam(name = "id") long id) {
         Optional<User> deletedUser = repository.deleteUser(id);
         if (deletedUser.isEmpty()) {
