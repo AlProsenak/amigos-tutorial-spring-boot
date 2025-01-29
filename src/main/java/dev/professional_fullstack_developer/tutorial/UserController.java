@@ -3,10 +3,7 @@ package dev.professional_fullstack_developer.tutorial;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +33,7 @@ public class UserController {
         }
         Optional<User> user = repository.getUserById(id);
         if (user.isEmpty()) {
-            return new ResponseEntity<>(new ExceptionResponse("Not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new SimpleResponse("Not found"), HttpStatus.NOT_FOUND);
         }
         return new UserResponse(user.orElseThrow(() -> new RuntimeException("Unexpected error")));
     }
@@ -47,7 +44,20 @@ public class UserController {
     public record UserResponse(User user) {
     }
 
-    public record ExceptionResponse(String message) {
+    @PostMapping(
+            path = "/user",
+            consumes = "application/json"
+    )
+    @ResponseBody
+    public Object createUser(@RequestBody CreateUser user) {
+        long id = repository.createUser(user.name, user.email);
+        return new ResponseEntity<>(new SimpleResponse("User created with ID: %s".formatted(id)), HttpStatus.CREATED);
+    }
+
+    public record CreateUser(String name, String email) {
+    }
+
+    public record SimpleResponse(String message) {
     }
 
     public static class User {
@@ -80,12 +90,19 @@ public class UserController {
 
         private final List<User> users = new ArrayList<>();
 
+        private long counter = 0;
+
         public StaticUserRepository() {
-            this.users.add(new User(1, "Alex", "alex@gmail.com"));
-            this.users.add(new User(2, "Alice", "alice@gmail.com"));
-            this.users.add(new User(3, "Bob", "bob@gmail.com"));
-            this.users.add(new User(4, "Robert", "robert@gmail.com"));
-            this.users.add(new User(5, "Denise", "denise@gmail.com"));
+            this.users.add(new User(generateId(), "Alex", "alex@gmail.com"));
+            this.users.add(new User(generateId(), "Alice", "alice@gmail.com"));
+            this.users.add(new User(generateId(), "Bob", "bob@gmail.com"));
+            this.users.add(new User(generateId(), "Robert", "robert@gmail.com"));
+            this.users.add(new User(generateId(), "Denise", "denise@gmail.com"));
+        }
+
+        private long generateId() {
+            this.counter += 1;
+            return this.counter;
         }
 
         public List<User> getUsers() {
@@ -96,6 +113,12 @@ public class UserController {
             return this.users.stream()
                     .filter(user -> user.id == id)
                     .findFirst();
+        }
+
+        public long createUser(String username, String email) {
+            User user = new User(generateId(), username, email);
+            this.users.add(user);
+            return user.getId();
         }
 
     }
