@@ -1,6 +1,7 @@
 package dev.professional_fullstack_developer.tutorial;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +32,8 @@ public class UserController {
 
     // @ResponseBody automatically wraps return type, as if it was ResponseEntity<String>
     @GetMapping(
-            path = {"/user", "/user/{id}"}
+            path = {"/user", "/user/{id}"},
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     public Object getUsers(@PathVariable(name = "id", required = false) Long id) {
         if (id == null) {
@@ -53,7 +55,8 @@ public class UserController {
 
     @PostMapping(
             path = "/user",
-            consumes = "application/json"
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     public Object createUser(@RequestBody CreateUser user) {
         long id = repository.createUser(user.name, user.email);
@@ -61,7 +64,8 @@ public class UserController {
     }
 
     @DeleteMapping(
-            path = "/user"
+            path = "/user",
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     public Object deleteUser(@RequestParam(name = "id") long id) {
         Optional<User> deletedUser = repository.deleteUser(id);
