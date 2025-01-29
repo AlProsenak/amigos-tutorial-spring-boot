@@ -3,7 +3,13 @@ package dev.professional_fullstack_developer.tutorial;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +58,18 @@ public class UserController {
     public Object createUser(@RequestBody CreateUser user) {
         long id = repository.createUser(user.name, user.email);
         return new ResponseEntity<>(new SimpleResponse("User created with ID: %s".formatted(id)), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(
+            path = "/user"
+    )
+    @ResponseBody
+    public Object deleteUser(@RequestParam(name = "id") long id) {
+        Optional<User> deletedUser = repository.deleteUser(id);
+        if (deletedUser.isEmpty()) {
+            return new ResponseEntity<>(new SimpleResponse("Not found"), HttpStatus.NOT_FOUND);
+        }
+        return new UserResponse(deletedUser.orElseThrow(() -> new RuntimeException("Unexpected error")));
     }
 
     public record CreateUser(String name, String email) {
@@ -119,6 +137,18 @@ public class UserController {
             User user = new User(generateId(), username, email);
             this.users.add(user);
             return user.getId();
+        }
+
+        public Optional<User> deleteUser(long id) {
+            long i = 0;
+            for (User user : this.users) {
+                if (user.id == id) {
+                    this.users.remove(user);
+                    return Optional.of(user);
+                }
+                i++;
+            }
+            return Optional.empty();
         }
 
     }
