@@ -139,15 +139,13 @@ public class UserController {
         }
 
         public Optional<User> deleteUser(long id) {
-            long i = 0;
-            for (User user : this.users) {
-                if (user.id == id) {
-                    this.users.remove(user);
-                    return Optional.of(user);
-                }
-                i++;
-            }
-            return Optional.empty();
+            Optional<User> deletedUser = this.users.stream()
+                    .filter(user -> user.id == id)
+                    .findFirst();
+
+            deletedUser.ifPresent(this.users::remove);
+
+            return deletedUser;
         }
 
     }
