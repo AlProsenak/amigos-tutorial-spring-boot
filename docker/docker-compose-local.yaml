@@ -1,0 +1,46 @@
+services:
+  database:
+    container_name: postgres
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: 'postgres' # Default: taken from POSTGRES_USER environment variable
+      POSTGRES_USER: 'postgres' # Default: `postgres`
+      POSTGRES_PASSWORD: 'postgres'
+      # Allows setting custom path for storing Postgres container data.
+      PGDATA: /var/lib/postgresql/data # Default: `/var/lib/postgresql/data`
+    # Setting hostname allows for simpler connection with pgAdmin.
+    hostname: postgres_hostname
+    ports:
+      - '5432:5432'
+    networks:
+      - postgres_network
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
+    restart: on-failure
+
+  database_console:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@localhost.dev
+      PGADMIN_DEFAULT_PASSWORD: pgadmin
+      # Run as single user mode.
+      PGADMIN_CONFIG_SERVER_MODE: 'False' # Default `True`
+    ports:
+      - '5050:80'
+    networks:
+      - postgres_network
+    volumes:
+      - pgadmin_volume:/var/lib/pgadmin # Default: `/var/lib/pgadmin`
+    depends_on:
+      - database
+    restart: on-failure
+
+networks:
+  postgres_network:
+    driver: bridge
+
+# Named volumes.
+volumes:
+  postgres_volume:
+  pgadmin_volume:
