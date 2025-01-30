@@ -8,3 +8,8 @@ server:
 spring:
   main:
     web-application-type: servlet # default
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
