@@ -2,6 +2,7 @@ package dev.professional_fullstack_developer.tutorial.adapter.repository;
 
 import dev.professional_fullstack_developer.tutorial.domain.dto.CreateUserRequest;
 import dev.professional_fullstack_developer.tutorial.domain.entity.User;
+import dev.professional_fullstack_developer.tutorial.domain.exception.BadRequestException;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -44,8 +45,24 @@ public  class StaticUserRepository implements UserRepository {
     @Override
     public long createUser(CreateUserRequest userDto) {
         User user = new User(generateId(), userDto.username(), userDto.email(), userDto.birthdate());
+        return createUser(user);
+    }
+
+    public long createUser(User user) {
+        validateUser(user);
         this.users.add(user);
         return user.getId();
+    }
+
+    public void validateUser(User user) {
+        for (User persistedUser : users) {
+            if (persistedUser.getEmail().equals(user.getEmail())) {
+                throw new BadRequestException("User with email '%s' already exists".formatted(user.getEmail()));
+            }
+            if (persistedUser.getUsername().equals(user.getUsername())) {
+               throw new BadRequestException("User with username '%s' already exists".formatted(user.getUsername()));
+            }
+        }
     }
 
     @Override
