@@ -1,6 +1,6 @@
 package dev.professional_fullstack_developer.tutorial.adapter.rest;
 
-import dev.professional_fullstack_developer.tutorial.adapter.repository.UserRepository;
+import dev.professional_fullstack_developer.tutorial.adapter.repository.UserJpaRepository;
 import dev.professional_fullstack_developer.tutorial.domain.dto.CreateUserRequest;
 import dev.professional_fullstack_developer.tutorial.domain.dto.SimpleResponse;
 import dev.professional_fullstack_developer.tutorial.domain.dto.UserResponse;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequestMapping(
         path = "/api/v1"
@@ -30,9 +29,9 @@ import java.util.Optional;
 @ResponseBody
 public class UserController {
 
-    private final UserRepository repository;
+    private final UserJpaRepository repository;
 
-    public UserController(UserRepository repository) {
+    public UserController(UserJpaRepository repository) {
         this.repository = repository;
     }
 
@@ -42,14 +41,14 @@ public class UserController {
     )
     public Object getUsers(@PathVariable(name = "id", required = false) Long id) {
         if (id == null) {
-            List<User> users = repository.getUsers();
+            List<User> users = repository.findAll();
             return new UsersResponse(users);
         }
-        Optional<User> user = repository.getUserById(id);
-        if (user.isEmpty()) {
-            throw new NotFoundException();
-        }
-        return new UserResponse(user.orElseThrow(() -> new RuntimeException("Unexpected error")));
+
+        User user = repository.findById(id)
+                .orElseThrow(NotFoundException::new);
+
+        return new UserResponse(user);
     }
 
     @PostMapping(
@@ -58,8 +57,11 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public Object createUser(@RequestBody CreateUserRequest userDto) {
-        long id = repository.createUser(userDto);
-        return new ResponseEntity<>(new SimpleResponse("User created with ID: %s".formatted(id)), HttpStatus.CREATED);
+        User user = User.from(userDto);
+        User createdUser = repository.save(user);
+
+        return new ResponseEntity<>(new SimpleResponse("User created with ID: %s"
+                .formatted(createdUser.getId())), HttpStatus.CREATED);
     }
 
     @DeleteMapping(
@@ -67,11 +69,12 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public Object deleteUser(@RequestParam(name = "id") long id) {
-        Optional<User> deletedUser = repository.deleteUser(id);
-        if (deletedUser.isEmpty()) {
-            throw new NotFoundException();
-        }
-        return new UserResponse(deletedUser.orElseThrow(() -> new RuntimeException("Unexpected error")));
+        User deletedUser = repository.findById(id)
+                .orElseThrow(NotFoundException::new);
+
+        repository.delete(deletedUser);
+
+        return new UserResponse(deletedUser);
     }
 
 }
