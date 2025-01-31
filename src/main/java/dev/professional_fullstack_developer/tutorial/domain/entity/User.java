@@ -1,6 +1,7 @@
 package dev.professional_fullstack_developer.tutorial.domain.entity;
 
 import dev.professional_fullstack_developer.tutorial.domain.dto.CreateUserRequest;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,11 +28,17 @@ public class User {
             // Sequence Generator uses sequenceName to generate DB sequence name.
             sequenceName = "end_user_id_sequence"
     )
+    @Column(nullable = false, unique = true)
     private long id;
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(nullable = false, unique = true)
     private String email;
+    @Column(nullable = false)
     private LocalDate birthdate;
+    @Column(nullable = false)
     private Instant createdAt;
+    @Column(nullable = false)
     private Instant updatedAt;
 
     protected User() {

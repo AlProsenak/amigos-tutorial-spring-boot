@@ -6,6 +6,7 @@ import dev.professional_fullstack_developer.tutorial.domain.dto.SimpleResponse;
 import dev.professional_fullstack_developer.tutorial.domain.dto.UserResponse;
 import dev.professional_fullstack_developer.tutorial.domain.dto.UsersResponse;
 import dev.professional_fullstack_developer.tutorial.domain.entity.User;
+import dev.professional_fullstack_developer.tutorial.domain.exception.BadRequestException;
 import dev.professional_fullstack_developer.tutorial.domain.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -58,6 +59,12 @@ public class UserController {
     )
     public Object createUser(@RequestBody CreateUserRequest userDto) {
         User user = User.from(userDto);
+        if (repository.existsByUsername(user.getUsername())) {
+            throw new BadRequestException("Username already exists");
+        }
+        if (repository.existsByEmail(user.getEmail())) {
+            throw new BadRequestException("Email already exists");
+        }
         User createdUser = repository.save(user);
 
         return new ResponseEntity<>(new SimpleResponse("User created with ID: %s"

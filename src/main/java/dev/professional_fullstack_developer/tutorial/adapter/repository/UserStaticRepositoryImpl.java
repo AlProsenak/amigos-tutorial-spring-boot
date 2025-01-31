@@ -72,4 +72,16 @@ public  class UserStaticRepositoryImpl implements UserStaticRepository {
         return deletedUser;
     }
 
+    @Override
+    public boolean existsByUsername(String username) {
+        return this.users.stream()
+                .anyMatch(user -> user.getUsername().equals(username));
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return this.users.stream().
+                anyMatch(user -> user.getEmail().equals(email));
+    }
+
 }
