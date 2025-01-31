@@ -1,5 +1,6 @@
 package dev.professional_fullstack_developer.tutorial.adapter.repository;
 
+import dev.professional_fullstack_developer.tutorial.domain.dto.CreateUserRequest;
 import dev.professional_fullstack_developer.tutorial.domain.entity.User;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface UserRepository {
 
     Optional<User> getUserById(long id);
 
-    long createUser(String name, String email);
+    long createUser(CreateUserRequest user);
 
     Optional<User> deleteUser(long id);
 

@@ -1,7 +1,7 @@
 package dev.professional_fullstack_developer.tutorial.adapter.rest;
 
 import dev.professional_fullstack_developer.tutorial.adapter.repository.UserRepository;
-import dev.professional_fullstack_developer.tutorial.domain.dto.CreateUser;
+import dev.professional_fullstack_developer.tutorial.domain.dto.CreateUserRequest;
 import dev.professional_fullstack_developer.tutorial.domain.dto.SimpleResponse;
 import dev.professional_fullstack_developer.tutorial.domain.dto.UserResponse;
 import dev.professional_fullstack_developer.tutorial.domain.dto.UsersResponse;
@@ -57,8 +57,8 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Object createUser(@RequestBody CreateUser user) {
-        long id = repository.createUser(user.name(), user.email());
+    public Object createUser(@RequestBody CreateUserRequest userDto) {
+        long id = repository.createUser(userDto);
         return new ResponseEntity<>(new SimpleResponse("User created with ID: %s".formatted(id)), HttpStatus.CREATED);
     }
 
