@@ -2,13 +2,11 @@ package dev.professional_fullstack_developer.tutorial.adapter.repository;
 
 import dev.professional_fullstack_developer.tutorial.domain.entity.User;
 import dev.professional_fullstack_developer.tutorial.domain.exception.BadRequestException;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class UserStaticRepository implements UserRepository {
 
     private final List<User> users = new ArrayList<>();

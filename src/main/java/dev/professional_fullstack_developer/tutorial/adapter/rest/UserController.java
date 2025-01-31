@@ -8,7 +8,6 @@ import dev.professional_fullstack_developer.tutorial.domain.dto.UsersResponse;
 import dev.professional_fullstack_developer.tutorial.domain.entity.User;
 import dev.professional_fullstack_developer.tutorial.domain.exception.BadRequestException;
 import dev.professional_fullstack_developer.tutorial.domain.exception.NotFoundException;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,7 @@ public class UserController {
 
     private final UserRepository repository;
 
-    public UserController(@Qualifier("userJpaRepository") UserRepository repository) {
+    public UserController(UserRepository repository) {
         this.repository = repository;
     }
 
