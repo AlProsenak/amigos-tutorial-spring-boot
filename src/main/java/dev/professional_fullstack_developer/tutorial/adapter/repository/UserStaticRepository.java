@@ -4,7 +4,6 @@ import dev.professional_fullstack_developer.tutorial.domain.entity.User;
 import dev.professional_fullstack_developer.tutorial.domain.exception.BadRequestException;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,11 +16,6 @@ public class UserStaticRepository implements UserRepository {
     private long counter = 0;
 
     public UserStaticRepository() {
-        this.users.add(save(new User("Alex", "alex@gmail.com", LocalDate.of(2002, 1, 12))));
-        this.users.add(save(new User("Alice", "alice@gmail.com", LocalDate.of(1998, 3, 24))));
-        this.users.add(save(new User("Bob", "bob@gmail.com", LocalDate.of(2004, 7, 16))));
-        this.users.add(save(new User("Robert", "robert@gmail.com", LocalDate.of(1980, 4, 28))));
-        this.users.add(save(new User("Denise", "denise@gmail.com", LocalDate.of(2001, 12, 30))));
     }
 
     private long generateId() {

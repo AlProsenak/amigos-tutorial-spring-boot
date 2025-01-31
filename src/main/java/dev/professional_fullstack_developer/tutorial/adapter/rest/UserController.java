@@ -1,6 +1,5 @@
 package dev.professional_fullstack_developer.tutorial.adapter.rest;
 
-import dev.professional_fullstack_developer.tutorial.adapter.repository.UserJpaRepository;
 import dev.professional_fullstack_developer.tutorial.adapter.repository.UserRepository;
 import dev.professional_fullstack_developer.tutorial.domain.dto.CreateUserRequest;
 import dev.professional_fullstack_developer.tutorial.domain.dto.SimpleResponse;
