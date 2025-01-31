@@ -1,6 +1,7 @@
 package dev.professional_fullstack_developer.tutorial.domain.entity;
 
 import dev.professional_fullstack_developer.tutorial.domain.dto.CreateUserRequest;
+import dev.professional_fullstack_developer.tutorial.domain.dto.UpdateUserRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -83,6 +84,13 @@ public class User {
 
     public static User from(CreateUserRequest userDto) {
         return new User(userDto.username(), userDto.email(), userDto.birthdate());
+    }
+
+    public void accept(UpdateUserRequest userDto) {
+        this.username = userDto.username();
+        this.email = userDto.email();
+        this.birthdate = userDto.birthdate();
+        this.updatedAt = Instant.now();
     }
 
 }

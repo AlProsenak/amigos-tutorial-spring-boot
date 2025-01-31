@@ -34,6 +34,19 @@ public class UserStaticRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByUsername(String username) {
+        return this.users.stream()
+                .filter(user -> user.getUsername().equals(username))
+                .findFirst();
+    }
+
+    public Optional<User> findByEmail(String email) {
+        return this.users.stream()
+                .filter(user -> user.getEmail().equals(email))
+                .findFirst();
+    }
+
+    @Override
     public User save(User user) {
         validateUser(user);
         user.setId(generateId());
