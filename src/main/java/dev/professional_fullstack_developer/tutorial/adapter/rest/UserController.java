@@ -1,6 +1,7 @@
 package dev.professional_fullstack_developer.tutorial.adapter.rest;
 
 import dev.professional_fullstack_developer.tutorial.adapter.repository.UserJpaRepository;
+import dev.professional_fullstack_developer.tutorial.adapter.repository.UserRepository;
 import dev.professional_fullstack_developer.tutorial.domain.dto.CreateUserRequest;
 import dev.professional_fullstack_developer.tutorial.domain.dto.SimpleResponse;
 import dev.professional_fullstack_developer.tutorial.domain.dto.UserResponse;
@@ -8,6 +9,7 @@ import dev.professional_fullstack_developer.tutorial.domain.dto.UsersResponse;
 import dev.professional_fullstack_developer.tutorial.domain.entity.User;
 import dev.professional_fullstack_developer.tutorial.domain.exception.BadRequestException;
 import dev.professional_fullstack_developer.tutorial.domain.exception.NotFoundException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +32,9 @@ import java.util.List;
 @ResponseBody
 public class UserController {
 
-    private final UserJpaRepository repository;
+    private final UserRepository repository;
 
-    public UserController(UserJpaRepository repository) {
+    public UserController(@Qualifier("userJpaRepository") UserRepository repository) {
         this.repository = repository;
     }
 
