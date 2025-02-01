@@ -21,11 +21,13 @@ public final class TestDataInitializer {
 
     @EventListener(ApplicationReadyEvent.class)
     private void initializeData() {
-        userRepository.save(new User("Alex", "alex@gmail.com", LocalDate.of(2002, 1, 12)));
-        userRepository.save(new User("Alice", "alice@gmail.com", LocalDate.of(1998, 3, 24)));
-        userRepository.save(new User("Bob", "bob@gmail.com", LocalDate.of(2004, 7, 16)));
-        userRepository.save(new User("Robert", "robert@gmail.com", LocalDate.of(1980, 4, 28)));
-        userRepository.save(new User("Denise", "denise@gmail.com", LocalDate.of(2001, 12, 30)));
+        if (userRepository.findAll().isEmpty()) {
+            userRepository.save(new User("Alex", "alex@gmail.com", LocalDate.of(2002, 1, 12)));
+            userRepository.save(new User("Alice", "alice@gmail.com", LocalDate.of(1998, 3, 24)));
+            userRepository.save(new User("Bob", "bob@gmail.com", LocalDate.of(2004, 7, 16)));
+            userRepository.save(new User("Robert", "robert@gmail.com", LocalDate.of(1980, 4, 28)));
+            userRepository.save(new User("Denise", "denise@gmail.com", LocalDate.of(2001, 12, 30)));
+        }
     }
 
 }

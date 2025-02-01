@@ -18,7 +18,7 @@ import java.time.LocalDate;
 )
 @Table(
         name = "end_user",
-        schema = "public"
+        schema = "tutorial"
 )
 public class User {
 
@@ -32,7 +32,9 @@ public class User {
             // JPA reference name.
             name = "user_id_sequence_name",
             // Sequence Generator uses sequenceName to generate DB sequence name.
-            sequenceName = "end_user_id_sequence"
+            sequenceName = "end_user_id_sequence",
+            schema = "tutorial",
+            allocationSize = 1
     )
     @Column(nullable = false, unique = true)
     private long id;
