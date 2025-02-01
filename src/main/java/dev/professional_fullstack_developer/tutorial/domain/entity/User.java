@@ -8,12 +8,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity(
         name = "end_user"
+)
+@Table(
+        name = "end_user",
+        schema = "public"
 )
 public class User {
 
