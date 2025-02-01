@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -18,7 +19,11 @@ import java.time.LocalDate;
 )
 @Table(
         name = "end_user",
-        schema = "tutorial"
+        schema = "tutorial",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "end_user_username", columnNames = "username"),
+                @UniqueConstraint(name = "end_user_email_key", columnNames = "email")
+        }
 )
 public class User {
 
