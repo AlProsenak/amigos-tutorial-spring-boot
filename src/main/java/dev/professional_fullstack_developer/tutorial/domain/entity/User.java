@@ -57,7 +57,7 @@ public class User {
     protected User() {
     }
 
-    public User(String username, String email, LocalDate birthdate) {
+    private User(String username, String email, LocalDate birthdate) {
         this.username = username;
         this.email = email;
         this.birthdate = birthdate;

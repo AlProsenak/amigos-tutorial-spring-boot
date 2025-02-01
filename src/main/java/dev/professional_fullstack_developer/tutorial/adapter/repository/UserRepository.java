@@ -17,6 +17,8 @@ public interface UserRepository {
 
     User save(User user);
 
+    <S extends User> List<S> saveAll(Iterable<S> entities);
+
     void delete(User user);
 
     boolean existsByUsername(String username);

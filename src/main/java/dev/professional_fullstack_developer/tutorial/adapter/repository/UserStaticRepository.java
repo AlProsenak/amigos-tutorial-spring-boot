@@ -54,6 +54,17 @@ public class UserStaticRepository implements UserRepository {
         return user;
     }
 
+    @Override
+    public <S extends User> List<S> saveAll(Iterable<S> entities) {
+        List<S> result = new ArrayList<>();
+        for (S entity : entities) {
+            this.validateUser(entity);
+            result.add(entity);
+            this.saveAll(result);
+        }
+        return result;
+    }
+
     public void validateUser(User user) {
         for (User persistedUser : users) {
             if (persistedUser.getEmail().equals(user.getEmail())) {
