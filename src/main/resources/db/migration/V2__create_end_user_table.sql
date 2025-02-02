@@ -12,8 +12,8 @@ CREATE TABLE tutorial.end_user
     username   text      NOT NULL UNIQUE,
     email      text      NOT NULL UNIQUE,
     birthdate  date      NOT NULL,
-    created_at timestamp NOT NULL,
-    updated_at timestamp NOT NULL,
+    created_at timestamp NOT NULL DEFAULT current_timestamp,
+    updated_at timestamp NOT NULL DEFAULT current_timestamp,
 
     CONSTRAINT pk_end_user_table PRIMARY KEY (id)
 );
