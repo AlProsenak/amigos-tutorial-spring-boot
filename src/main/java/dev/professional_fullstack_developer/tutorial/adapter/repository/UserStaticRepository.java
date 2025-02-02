@@ -60,7 +60,7 @@ public class UserStaticRepository implements UserRepository {
         for (S entity : entities) {
             this.validateUser(entity);
             result.add(entity);
-            this.saveAll(result);
+            this.users.addAll(result);
         }
         return result;
     }
