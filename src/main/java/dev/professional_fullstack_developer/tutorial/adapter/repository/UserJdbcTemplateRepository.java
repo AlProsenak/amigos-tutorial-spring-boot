@@ -40,12 +40,11 @@ public class UserJdbcTemplateRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(long id) {
-        List<User> users = jdbcTemplate.query(
+        return jdbcTemplate.query(
                 USER_SELECT_BY_ID_SQL,
                 new UserRowMapper(),
                 id
-        );
-        return users.isEmpty() ? Optional.empty() : Optional.of(users.getFirst());
+        ).stream().findFirst();
     }
 
     private static final String USER_SELECT_BY_USERNAME_SQL = """
@@ -54,12 +53,11 @@ public class UserJdbcTemplateRepository implements UserRepository {
 
     @Override
     public Optional<User> findByUsername(String username) {
-        List<User> users = jdbcTemplate.query(
+        return jdbcTemplate.query(
                 USER_SELECT_BY_USERNAME_SQL,
                 new UserRowMapper(),
                 username
-        );
-        return users.isEmpty() ? Optional.empty() : Optional.of(users.getFirst());
+        ).stream().findFirst();
     }
 
     private static final String USER_SELECT_BY_EMAIL_SQL = """
@@ -68,12 +66,11 @@ public class UserJdbcTemplateRepository implements UserRepository {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        List<User> users = jdbcTemplate.query(
+        return jdbcTemplate.query(
                 USER_SELECT_BY_EMAIL_SQL,
                 new UserRowMapper(),
                 email
-        );
-        return users.isEmpty() ? Optional.empty() : Optional.of(users.getFirst());
+        ).stream().findFirst();
     }
 
     private static final String USER_UPSERT_SQL = """
