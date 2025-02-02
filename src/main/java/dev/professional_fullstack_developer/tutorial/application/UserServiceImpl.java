@@ -6,6 +6,7 @@ import dev.professional_fullstack_developer.tutorial.domain.dto.UpdateUserReques
 import dev.professional_fullstack_developer.tutorial.domain.entity.User;
 import dev.professional_fullstack_developer.tutorial.domain.exception.BadRequestException;
 import dev.professional_fullstack_developer.tutorial.domain.exception.NotFoundException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
 
-    public UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(@Qualifier("userRepositoryBean") UserRepository repository) {
         this.repository = repository;
     }
 

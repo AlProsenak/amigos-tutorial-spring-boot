@@ -4,6 +4,7 @@ import com.github.javafaker.Faker;
 import dev.professional_fullstack_developer.tutorial.adapter.repository.UserRepository;
 import dev.professional_fullstack_developer.tutorial.domain.dto.CreateUserRequest;
 import dev.professional_fullstack_developer.tutorial.domain.entity.User;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
@@ -23,7 +24,7 @@ public final class TestDataInitializer {
 
     private final UserRepository userRepository;
 
-    private TestDataInitializer(UserRepository userRepository) {
+    private TestDataInitializer(@Qualifier("userRepositoryBean") UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

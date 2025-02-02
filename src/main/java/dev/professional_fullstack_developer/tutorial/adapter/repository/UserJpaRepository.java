@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 // Semantic annotation is not required for interfaces extended by JPARepository,
 // since by default it auto-instantiates the bean, via @EnableJpaRepositories declared in JpaRepositoriesRegistrar.
-@Repository
+//@Repository
 @Profile("!static")
 public interface UserJpaRepository extends JpaRepository<User, Long>, UserRepository {
 }
