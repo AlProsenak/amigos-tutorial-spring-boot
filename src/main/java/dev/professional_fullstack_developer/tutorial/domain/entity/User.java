@@ -42,7 +42,7 @@ public class User {
             allocationSize = 1
     )
     @Column(nullable = false, unique = true)
-    private long id;
+    private Long id;
     @Column(nullable = false, unique = true)
     private String username;
     @Column(nullable = false, unique = true)
@@ -66,7 +66,7 @@ public class User {
         this.updatedAt = now;
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
@@ -78,20 +78,44 @@ public class User {
         return this.username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getEmail() {
         return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public LocalDate getBirthdate() {
         return this.birthdate;
     }
 
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
+    }
+
     public Instant getCreatedAt() {
         return this.createdAt;
     }
 
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public Instant getUpdatedAt() {
         return this.updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public static User getInstance() {
+        return new User();
     }
 
     public static User from(CreateUserRequest userDto) {

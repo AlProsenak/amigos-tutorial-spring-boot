@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
 
-    public UserServiceImpl(@Qualifier("userRepositoryBean") UserRepository repository) {
+    public UserServiceImpl(@Qualifier("userJdbcTemplateRepositoryBean") UserRepository repository) {
         this.repository = repository;
     }
 
