@@ -1,14 +1,12 @@
 package dev.professional_fullstack_developer.tutorial.adapter.rest;
 
-import dev.professional_fullstack_developer.tutorial.adapter.repository.UserRepository;
+import dev.professional_fullstack_developer.tutorial.application.UserService;
 import dev.professional_fullstack_developer.tutorial.domain.dto.CreateUserRequest;
 import dev.professional_fullstack_developer.tutorial.domain.dto.SimpleResponse;
 import dev.professional_fullstack_developer.tutorial.domain.dto.UpdateUserRequest;
 import dev.professional_fullstack_developer.tutorial.domain.dto.UserResponse;
 import dev.professional_fullstack_developer.tutorial.domain.dto.UsersResponse;
 import dev.professional_fullstack_developer.tutorial.domain.entity.User;
-import dev.professional_fullstack_developer.tutorial.domain.exception.BadRequestException;
-import dev.professional_fullstack_developer.tutorial.domain.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +32,10 @@ import java.util.Optional;
 @ResponseBody
 public class UserController {
 
-    private final UserRepository repository;
+    private final UserService service;
 
-    public UserController(UserRepository repository) {
-        this.repository = repository;
+    public UserController(UserService service) {
+        this.service = service;
     }
 
     @GetMapping(
@@ -45,14 +43,13 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.OK)
-    public Object getUsers(@PathVariable(name = "id", required = false) Long id) {
-        if (id == null) {
-            List<User> users = repository.findAll();
+    public Object getUsers(@PathVariable(name = "id", required = false) Optional<Long> id) {
+        if (id.isEmpty()) {
+            List<User> users = service.getAllUsers();
             return new UsersResponse(users);
         }
 
-        User user = repository.findById(id)
-                .orElseThrow(NotFoundException::new);
+        User user = service.getUserById(id.get());
 
         return new UserResponse(user);
     }
@@ -63,15 +60,7 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public Object createUser(@RequestBody CreateUserRequest userDto) {
-        User user = User.from(userDto);
-        if (repository.existsByUsername(user.getUsername())) {
-            throw new BadRequestException("Username already exists");
-        }
-        if (repository.existsByEmail(user.getEmail())) {
-            throw new BadRequestException("Email already exists");
-        }
-
-        User createdUser = repository.save(user);
+        User createdUser = service.createUser(userDto);
 
         return new ResponseEntity<>(new SimpleResponse("User created with ID: %s"
                 .formatted(createdUser.getId())), HttpStatus.CREATED);
@@ -84,20 +73,7 @@ public class UserController {
     )
     @ResponseStatus(HttpStatus.OK)
     public Object updateUser(@RequestBody UpdateUserRequest userDto) {
-        User user = repository.findById(userDto.id())
-                .orElseThrow(NotFoundException::new);
-
-        Optional<User> existingUser = repository.findByUsername(userDto.username());
-        if (existingUser.isPresent() && existingUser.get().getId() != user.getId()) {
-            throw new BadRequestException("Username already exists");
-        }
-        existingUser = repository.findByEmail(userDto.email());
-        if (existingUser.isPresent() && existingUser.get().getId() != user.getId()) {
-            throw new BadRequestException("Email already exists");
-        }
-
-        user.accept(userDto);
-        User updatedUser = repository.save(user);
+        User updatedUser = service.updateUser(userDto);
 
         return new UserResponse(updatedUser);
     }
@@ -108,10 +84,7 @@ public class UserController {
     )
     @ResponseStatus(HttpStatus.OK)
     public Object deleteUser(@RequestParam(name = "id") long id) {
-        User deletedUser = repository.findById(id)
-                .orElseThrow(NotFoundException::new);
-
-        repository.delete(deletedUser);
+        User deletedUser = service.deleteUser(id);
 
         return new UserResponse(deletedUser);
     }
