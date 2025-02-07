@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static dev.professional_fullstack_developer.tutorial.application.local.TestDataInitializer.getStaticTestUsers;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -58,8 +59,9 @@ class UserJdbcTemplateRepositoryTest extends PostgresTestcontainer {
 
         Optional<User> result = testSubject.findById(expectedId);
 
-        assertTrue(result.isPresent());
-        assertEquals(expectedId, result.get().getId());
+        assertThat(result).isPresent().hasValueSatisfying(user -> {
+            assertEquals(user.getId(), expectedId);
+        });
     }
 
     @Test
@@ -68,8 +70,9 @@ class UserJdbcTemplateRepositoryTest extends PostgresTestcontainer {
 
         Optional<User> result = testSubject.findByUsername(expectedUsername);
 
-        assertTrue(result.isPresent());
-        assertEquals(expectedUsername, result.get().getUsername());
+        assertThat(result).isPresent().hasValueSatisfying(user -> {
+            assertThat(user.getUsername()).isEqualTo(expectedUsername);
+        });
     }
 
     @Test
@@ -78,8 +81,9 @@ class UserJdbcTemplateRepositoryTest extends PostgresTestcontainer {
 
         Optional<User> result = testSubject.findByEmail(expectedEmail);
 
-        assertTrue(result.isPresent());
-        assertEquals(expectedEmail, result.get().getEmail());
+        assertThat(result).isPresent().hasValueSatisfying(user -> {
+            assertThat(user.getEmail()).isEqualTo(expectedEmail);
+        });
     }
 
     @Test
@@ -91,8 +95,9 @@ class UserJdbcTemplateRepositoryTest extends PostgresTestcontainer {
 
         Optional<User> savedUser = testSubject.findByUsername(username);
 
-        assertTrue(savedUser.isPresent());
-        assertEquals(savedUser.get().getId(), result.getId());
+        assertThat(savedUser).isPresent().hasValueSatisfying(user -> {
+            assertThat(user.getId()).isEqualTo(result.getId());
+        });
     }
 
     // Save all is already tested in @BeforeEach
