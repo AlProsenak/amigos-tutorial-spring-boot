@@ -118,11 +118,20 @@ public class UserJdbcTemplateRepository implements UserRepository {
                 usersCollection.size(),
                 (PreparedStatement ps, S user) -> {
                     Timestamp now = Timestamp.from(Instant.now());
+                    // update
                     ps.setString(1, user.getUsername());
                     ps.setString(2, user.getEmail());
                     ps.setDate(3, Date.valueOf(user.getBirthdate()));
                     ps.setTimestamp(4, now);
-                    ps.setTimestamp(5, now);
+                    // Using setObject() instead of setLong(), since ID can be null.
+                    ps.setObject(5, user.getId());
+
+                    // insert
+                    ps.setString(6, user.getUsername());
+                    ps.setString(7, user.getEmail());
+                    ps.setDate(8, Date.valueOf(user.getBirthdate()));
+                    ps.setTimestamp(9, now);
+                    ps.setTimestamp(10, now);
                 }
         );
 

@@ -31,24 +31,27 @@ public final class TestDataInitializer {
     @EventListener(ApplicationReadyEvent.class)
     private void initializeData() {
         if (userRepository.findAll().isEmpty()) {
-            List<User> users = new ArrayList<>();
-            users.add(User.from(new CreateUserRequest("Alex", "alex@gmail.com", LocalDate.of(2002, 1, 12))));
-            users.add(User.from(new CreateUserRequest("Alice", "alice@gmail.com", LocalDate.of(1998, 3, 24))));
-            users.add(User.from(new CreateUserRequest("Bob", "bob@gmail.com", LocalDate.of(2004, 7, 16))));
-            users.add(User.from(new CreateUserRequest("Robert", "robert@gmail.com", LocalDate.of(1980, 4, 28))));
-            users.add(User.from(new CreateUserRequest("Denise", "denise@gmail.com", LocalDate.of(2001, 12, 30))));
+            List<User> users = getStaticTestUsers();
 
-            users.add(createFakeUser());
-            users.add(createFakeUser());
-            users.add(createFakeUser());
-            users.add(createFakeUser());
-            users.add(createFakeUser());
+            for (int i = 0; i < 5; i++) {
+                users.add(createFakeUser());
+            }
 
             userRepository.saveAll(users);
         }
     }
 
-    private static User createFakeUser() {
+    public static List<User> getStaticTestUsers() {
+        List<User> users = new ArrayList<>();
+        users.add(User.from(new CreateUserRequest("Alex", "alex@gmail.com", LocalDate.of(2002, 1, 12))));
+        users.add(User.from(new CreateUserRequest("Alice", "alice@gmail.com", LocalDate.of(1998, 3, 24))));
+        users.add(User.from(new CreateUserRequest("Bob", "bob@gmail.com", LocalDate.of(2004, 7, 16))));
+        users.add(User.from(new CreateUserRequest("Robert", "robert@gmail.com", LocalDate.of(1980, 4, 28))));
+        users.add(User.from(new CreateUserRequest("Denise", "denise@gmail.com", LocalDate.of(2001, 12, 30))));
+        return users;
+    }
+
+    public static User createFakeUser() {
         CreateUserRequest userDto = new CreateUserRequest(
                 faker.name().username(),
                 faker.internet().emailAddress(),
