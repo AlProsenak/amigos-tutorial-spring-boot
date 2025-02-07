@@ -87,6 +87,11 @@ public class UserStaticRepository implements UserRepository {
     }
 
     @Override
+    public void  deleteAll() {
+        this.users.clear();
+    }
+
+    @Override
     public boolean existsByUsername(String username) {
         return this.users.stream()
                 .anyMatch(user -> user.getUsername().equals(username));

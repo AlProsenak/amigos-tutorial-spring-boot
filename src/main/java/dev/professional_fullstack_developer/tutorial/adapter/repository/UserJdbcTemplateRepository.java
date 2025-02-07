@@ -149,6 +149,15 @@ public class UserJdbcTemplateRepository implements UserRepository {
         jdbcTemplate.update(USER_DELETE_SQL, user.getId());
     }
 
+    private static final String USER_DELETE_ALL_SQL = """
+            DELETE FROM tutorial.end_user CASCADE;
+            """;
+
+    @Override
+    public void deleteAll() {
+        jdbcTemplate.update(USER_DELETE_ALL_SQL);
+    }
+
     private static final String USER_EXISTS_BY_USERNAME_SQL = """
             SELECT EXISTS(SELECT 1 FROM tutorial.end_user WHERE username = ?);
             """;
