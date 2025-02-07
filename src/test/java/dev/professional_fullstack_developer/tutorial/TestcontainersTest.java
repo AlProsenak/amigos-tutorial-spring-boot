@@ -26,9 +26,6 @@ public class TestcontainersTest {
             .withPassword("postgres")
             .withExposedPorts(5432);
 
-    private static Flyway flyway;
-    private static MigrateResult migrationResult;
-
     // Programmatically registers configuration properties from container, for other dependent beans to use them.
     @DynamicPropertySource
     private static void registerDataSourceProperties(DynamicPropertyRegistry registry) {
@@ -36,6 +33,9 @@ public class TestcontainersTest {
         registry.add("spring.datasource.username", container::getUsername);
         registry.add("spring.datasource.password", container::getPassword);
     }
+
+    private static Flyway flyway;
+    private static MigrateResult migrationResult;
 
     @BeforeAll
     static void init() {
