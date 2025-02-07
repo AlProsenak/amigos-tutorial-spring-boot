@@ -172,7 +172,7 @@ public class UserJdbcTemplateRepository implements UserRepository {
     }
 
     private static final String USER_EXISTS_BY_EMAIL_SQL = """
-            SELECT EXISTS(SELECT 1 FROM tutorial.end_user WHERE username = ?);
+            SELECT EXISTS(SELECT 1 FROM tutorial.end_user WHERE email = ?);
             """;
 
     @Override
