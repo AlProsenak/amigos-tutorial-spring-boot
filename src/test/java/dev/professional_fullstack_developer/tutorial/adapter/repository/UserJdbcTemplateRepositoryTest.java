@@ -2,11 +2,13 @@ package dev.professional_fullstack_developer.tutorial.adapter.repository;
 
 import dev.professional_fullstack_developer.tutorial.domain.dto.CreateUserRequest;
 import dev.professional_fullstack_developer.tutorial.domain.entity.User;
+import dev.professional_fullstack_developer.tutorial.extension.DemoExtension;
 import dev.professional_fullstack_developer.tutorial.testcontainer.PostgresTestcontainer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@ExtendWith({DemoExtension.class})
 class UserJdbcTemplateRepositoryTest extends PostgresTestcontainer {
 
     private UserJdbcTemplateRepository testSubject;
