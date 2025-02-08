@@ -2,12 +2,14 @@ package dev.professional_fullstack_developer.tutorial.application;
 
 import dev.professional_fullstack_developer.tutorial.adapter.repository.UserRepository;
 import dev.professional_fullstack_developer.tutorial.domain.dto.CreateUserRequest;
+import dev.professional_fullstack_developer.tutorial.domain.dto.UpdateUserRequest;
 import dev.professional_fullstack_developer.tutorial.domain.entity.User;
 import dev.professional_fullstack_developer.tutorial.domain.exception.BadRequestException;
 import dev.professional_fullstack_developer.tutorial.domain.exception.NotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -97,6 +99,28 @@ class UserServiceImplTest {
 
     @Test
     void updateUser() {
+        UpdateUserRequest request = new UpdateUserRequest(1L, "test", "test@mail.com", LocalDate.of(2000, 1, 1));
+        User expected = getStaticTestUsers().getFirst(); // Too lazy to write custom new User
+        expected.accept(request);
+        expected.setId(1L);
+
+        Mockito.when(repository.findById(request.id())).thenReturn(Optional.of(expected));
+        Mockito.when(repository.findByEmail(request.email())).thenReturn(Optional.of(expected));
+        Mockito.when(repository.findByEmail(request.email())).thenReturn(Optional.of(expected));
+
+        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+
+        testSubject.updateUser(request);
+
+        // Could validate that return of this method is correct, but we are trying this test with ArgumentCaptor for practice sake.
+        Mockito.verify(repository, Mockito.times(1)).save(captor.capture());
+
+        // Validates that user entity was not tampered during processing.
+        User actual = captor.getValue();
+        assertThat(actual).isNotNull();
+        assertThat(actual.getId()).isEqualTo(request.id());
+        assertThat(actual.getUsername()).isEqualTo(request.username());
+        assertThat(actual.getEmail()).isEqualTo(request.email());
     }
 
     @Test
