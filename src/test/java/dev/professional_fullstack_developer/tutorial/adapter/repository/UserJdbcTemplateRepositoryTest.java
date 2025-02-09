@@ -103,8 +103,6 @@ class UserJdbcTemplateRepositoryTest extends PostgresTestcontainer {
         });
     }
 
-    // Save all is already tested in @BeforeEach
-    @Disabled
     @Test
     void saveAll() {
         // TODO: testSubject method is missing correct return result
