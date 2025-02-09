@@ -20,7 +20,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = TutorialApplication.class)
-public class UserControllerTest extends PostgresTestcontainer {
+public class UserControllerIntegrationTest extends PostgresTestcontainer {
 
     @Autowired
     private WebTestClient client;

@@ -14,6 +14,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+// This test class is just a reference for testcontainers.
 @Testcontainers
 // Spins up whole application context, therefore it should not be used for unit tests or simple layer/component tests, where context can be self-configured.
 //@SpringBootTest
