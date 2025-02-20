@@ -1,6 +1,6 @@
 services:
   database:
-    container_name: postgres
+    container_name: pfsd_postgres
     image: postgres:alpine
     environment:
       POSTGRES_DB: 'postgres' # Default: taken from POSTGRES_USER environment variable
@@ -9,38 +9,39 @@ services:
       # Allows setting custom path for storing Postgres container data.
       PGDATA: /var/lib/postgresql/data # Default: `/var/lib/postgresql/data`
     # Setting hostname allows for simpler connection with pgAdmin.
-    hostname: postgres_hostname
+    hostname: pfsd_postgres_hostname
     ports:
       - '5432:5432'
     networks:
-      - postgres_network
+      - pfsd_network
     volumes:
-      - postgres_volume:/var/lib/postgresql/data
+      - pfsd_postgres_volume:/var/lib/postgresql/data
     restart: on-failure
 
   database_console:
-    container_name: pgadmin
+    container_name: pfsd_pgadmin
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: pgadmin@localhost.dev
       PGADMIN_DEFAULT_PASSWORD: pgadmin
       # Run as single user mode.
       PGADMIN_CONFIG_SERVER_MODE: 'False' # Default `True`
+    hostname: pfsd_pgadmin_hostname
     ports:
       - '5050:80'
     networks:
-      - postgres_network
+      - pfsd_network
     volumes:
-      - pgadmin_volume:/var/lib/pgadmin # Default: `/var/lib/pgadmin`
+      - pfsd_pgadmin_volume:/var/lib/pgadmin # Default: `/var/lib/pgadmin`
     depends_on:
       - database
     restart: on-failure
 
 networks:
-  postgres_network:
+  pfsd_network:
     driver: bridge
 
 # Named volumes.
 volumes:
-  postgres_volume:
-  pgadmin_volume:
+  pfsd_postgres_volume:
+  pfsd_pgadmin_volume:
