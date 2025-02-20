@@ -37,6 +37,23 @@ services:
       - database
     restart: on-failure
 
+  spring_boot:
+    container_name: pfsd_spring_boot
+    image: alprosenak/tutorial:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://pfsd_postgres_hostname:5432/postgres
+    hostname: pfsd_spring_boot_hostname
+    ports:
+      - '8081:8080'
+    networks:
+      - pfsd_network
+    depends_on:
+      - database
+    restart: on-failure
+    # Alternative to environment variable
+#    command:
+#      - --spring.datasource.url=jdbc:postgresql://pfsd_postgres_hostname:5432/postgres
+
 networks:
   pfsd_network:
     driver: bridge
