@@ -1,7 +1,7 @@
 services:
   database:
     container_name: pfsd_postgres
-    image: postgres:alpine
+    image: postgres:17.4-alpine
     environment:
       POSTGRES_DB: 'postgres' # Default: taken from POSTGRES_USER environment variable
       POSTGRES_USER: 'postgres' # Default: `postgres`
@@ -20,7 +20,7 @@ services:
 
   database_console:
     container_name: pfsd_pgadmin
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:9.0.0
     environment:
       PGADMIN_DEFAULT_EMAIL: pgadmin@localhost.dev
       PGADMIN_DEFAULT_PASSWORD: pgadmin

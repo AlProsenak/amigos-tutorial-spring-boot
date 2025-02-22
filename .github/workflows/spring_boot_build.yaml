@@ -1,0 +1,48 @@
+name: Spring Boot build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    # Can specify project path, so that only when changes inside specified path are made GitHub Action will trigger. Example:
+#    paths:
+#      - example/path/**
+
+jobs:
+  # Job name - can be whatever.
+  build:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17.4-alpine
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    defaults:
+      run:
+        # Sets working directory. As if `cd` was executed.
+        working-directory: .
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Java environment
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+      - name: Build, run tests and push to Docker repository
+        run: |
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+          mvn -ntp -B verify

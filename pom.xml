@@ -239,10 +239,10 @@
                         </tags>
                     </to>
                 </configuration>
-                <!-- Bind plugin to `mvn package` and execute `jib:build` -->
+                <!-- Binds plugin to `mvn verify` and executes `jib:build` -->
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>build</goal>
                         </goals>
