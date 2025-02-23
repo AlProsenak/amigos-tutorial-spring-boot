@@ -1,6 +1,8 @@
-name: Spring Boot build
+name: CI - build and push to Docker repository
 
 on:
+  # Allows for manual trigger
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -13,7 +15,7 @@ on:
 
 jobs:
   # Job name - can be whatever.
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -31,7 +33,7 @@ jobs:
           --health-retries 5
     defaults:
       run:
-        # Sets working directory. As if `cd` was executed.
+        # Sets working directory. As if `cd` was executed. Example: `./path/to/working/dir`
         working-directory: .
     steps:
       - name: Checkout repository
