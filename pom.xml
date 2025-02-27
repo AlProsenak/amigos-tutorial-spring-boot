@@ -233,8 +233,10 @@
                         </platforms>
                     </from>
                     <to>
-                        <image>docker.io/${docker.username}/${project.artifactId}:${project.version}</image>
+<!--                        <image>docker.io/${docker.username}/${project.artifactId}:${project.version}</image>-->
+                        <image>docker.io/${docker.username}/${project.artifactId}</image>
                         <tags>
+                            <tag>${env.GITHUB_SHA}</tag>
                             <tag>latest</tag>
                         </tags>
                     </to>
